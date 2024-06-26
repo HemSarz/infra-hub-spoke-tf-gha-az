@@ -1,55 +1,43 @@
-  name: Destroy backend infra
+name: Terraform Destroy
 
-  on:
-    workflow_dispatch:
+on:
+  workflow_dispatch:
 
-  jobs:
-    terraform-destroy:
-      name: 'Terraform Destroy'
-      runs-on: ubuntu-latest
-      env:
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        TF_VERSION: 1.3.6
+jobs:
+  terraform-destroy:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-      defaults:
-        run:
-          shell: bash
-          working-directory: ./terraform
+    defaults:
+      run:
+        working-directory: ./terraform
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v2
-          with:
-            terraform_version: ${{ env.TF_VERSION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.11
 
-        - name: Terraform init
-          id: init
-          run: |
-            set -a 
-            source ../.env.backend
-            terraform init \
-              -backend-config="resource_group_name=$TF_VAR_state_resource_group_name" \
-              -backend-config="storage_account_name=$TF_VAR_state_storage_account_name"
-              
-        - name: Terraform destroy
-          id: destroy
-          run: terraform destroy -auto-approve
+      - name: Source Environment Variables
+        run: |
+          set -a
+          source ../.env.backend
+          set +a
 
-        - name: Az login
-          uses: azure/login@v2
-          with:
-            creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+      - name: Terraform Init
+        run: |
+          terraform init -backend-config="resource_group_name=${TF_VAR_state_resource_group_name}" \
+            -backend-config="storage_account_name=${TF_VAR_state_storage_account_name}" \
+            -backend-config="container_name=${TF_VAR_state_container_name}" \
+            -backend-config="key=${TF_VAR_state_key}"
 
-        - name: Destroy backend RG
-          run: |
-            az keyvault delete --name bcknd-tfaz-kvault --resource-group tfaz-bcknd-rg
-            az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
-            
-            az group delete --name tfaz-bcknd-rg --yes --no-wait
-            az group delete --name networkwatcherrg --yes --no-wait
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
