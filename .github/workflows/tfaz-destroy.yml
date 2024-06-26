@@ -1,7 +1,7 @@
 name: Terraform Destroy
 
 on:
-  workflow_dispatch:y
+  workflow_dispatch:
 jobs:
   terraform-destroy:
     name: 'Terraform Destroy'
