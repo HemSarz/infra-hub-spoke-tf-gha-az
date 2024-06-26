@@ -21,13 +21,22 @@ data "azurerm_storage_account" "bckndstg" {
 }
 
 #Fetch SSHKey
-data "azurerm_key_vault_secret" "sshKey" {
-  name         = "tfazlnxkeypub"
+data "azurerm_key_vault_secret" "sshKey-web" {
+  name         = "tfazlnxkeypub-web-vm"
   key_vault_id = data.azurerm_key_vault.bckndKV.id
-
 }
 
-output "ssh_key" {
-  value     = data.azurerm_key_vault_secret.sshKey.value
+data "azurerm_key_vault_secret" "sshKey-mgmt" {
+  name         = "tfazlnxkeypub-mgmt-vm"
+  key_vault_id = data.azurerm_key_vault.bckndKV.id
+}
+
+output "ssh_key-web" {
+  value     = data.azurerm_key_vault_secret.sshKey-web.value
+  sensitive = true
+}
+
+output "ssh_key-mgmt" {
+  value     = data.azurerm_key_vault_secret.sshKey-mgmt.value
   sensitive = true
 }
