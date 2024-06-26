@@ -20,9 +20,9 @@ jobs:
           set -a
           source .env.backend
           az login --service-principal \
-            -u ${{ secrets.CLIENT_ID }} \
-            -p ${{ secrets.CLIENT_SECRET }} \
-            --tenant ${{ secrets.TENANT_ID }}
+            -u ${{ secrets.ARM.CLIENT_ID }} \
+            -p ${{ secrets.ARM.CLIENT_SECRET }} \
+            --tenant ${{ secrets.ARM.TENANT_ID }}
 
       - name: Create Resource Group
         run: |
@@ -65,7 +65,7 @@ jobs:
         run: |
           set -a
           source .env.backend
-          backend_SPNid=$(az ad sp show --id ${{ secrets.CLIENT_ID }} --query id -o tsv)
+          backend_SPNid=$(az ad sp show --id ${{ secrets.ARM.CLIENT_ID }} --query id -o tsv)
 
           echo "backend_SPNid: $backend_SPNid"
 
