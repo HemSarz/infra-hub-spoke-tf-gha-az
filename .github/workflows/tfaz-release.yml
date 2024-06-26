@@ -1,8 +1,6 @@
 on:
   release:
     types: [published]
-    branches:
-      - main
 
 name: On Release Main
 
