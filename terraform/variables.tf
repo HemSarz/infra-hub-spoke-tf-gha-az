@@ -40,7 +40,7 @@ variable "admin_username" {
 
 variable "vm_size" {
   type    = string
-  default = "Standard_1s"
+  default = "Standard_B1s"
 }
 
 variable "next_hop_type" {
