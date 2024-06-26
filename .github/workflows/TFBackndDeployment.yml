@@ -87,4 +87,3 @@ jobs:
               --vault-name $TF_VAR_state_key_vault_name \
               --name tfazlnxkeypriv_${vm} \
               --file tfazlnxkey_${vm}
-          done
