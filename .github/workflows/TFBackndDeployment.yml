@@ -82,9 +82,9 @@ jobs:
             az keyvault secret set \
               --vault-name $TF_VAR_state_key_vault_name \
               --name tfazlnxkeypub_${vm} \
-              --file tfazlnxkey_${vm}.pub
+              --file tfazlnxkey-${vm}.pub
             az keyvault secret set \
               --vault-name $TF_VAR_state_key_vault_name \
-              --name tfazlnxkeypriv_${vm} \
+              --name tfazlnxkeypriv-${vm} \
               --file tfazlnxkey_${vm}
           done
