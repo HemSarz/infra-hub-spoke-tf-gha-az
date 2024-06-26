@@ -26,7 +26,7 @@ resource "azurerm_subnet" "spokesub02" {
 
 ## Firewall subnet
 resource "azurerm_subnet" "fwsub" {
-  name                 = "${var.prefix}-fwsub-${var.env}"
+  name                 = "AzureFirewallSubnet"
   resource_group_name  = azurerm_resource_group.tfazrg.name
   virtual_network_name = azurerm_virtual_network.tfazvnethub.name
   address_prefixes     = ["10.0.2.0/24"]

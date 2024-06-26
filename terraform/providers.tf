@@ -1,20 +1,23 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.109.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 3.6.2"
-    }
-  }
-}
-
 provider "azurerm" {
   features {
     key_vault {
       purge_soft_delete_on_destroy = true
+    }
+  }
+}
+
+terraform {
+  backend "azurerm" {
+    resource_group_name  = var.state_resource_group_name
+    storage_account_name = var.state_storage_account_name
+    container_name       = "tfstatebcknd"
+    key                  = "tfstatebcknd"
+  }
+
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.6.2"
     }
   }
 }
