@@ -29,5 +29,5 @@ resource "azurerm_subnet" "fwsub" {
   name                 = "AzureFirewallSubnet"
   resource_group_name  = azurerm_resource_group.tfazrg.name
   virtual_network_name = azurerm_virtual_network.tfazvnethub.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.2.0/26"]
 }
