@@ -74,24 +74,20 @@ jobs:
             --object-id $backend_SPNid \
             --secret-permissions get list set
 
-      - name: Create SSHKey
-        run: |
-          ssh-keygen -t rsa -b 4096 -f tfazlnxkey -N ""
-
-      - name: Upload SSH public key to Key Vault
-        run: |
-          set -a
-          source .env.backend
-          az keyvault secret set \
-            --vault-name $TF_VAR_state_key_vault_name \
-            --name tfazlnxkeypub \
-            --file tfazlnxkey.pub
-
-      - name: Upload SSH private key to Key Vault
-        run: |
-          set -a
-          source .env.backend
-          az keyvault secret set \
-            --vault-name $TF_VAR_state_key_vault_name \
-            --name tfazlnxkeypriv \
-            --file tfazlnxkey
+            - name: Create SSH Keys and Upload to Key Vault
+            run: |
+              set -a
+              source .env.backend
+    
+              for vm in mgmt-vm web-vm; do
+                ssh-keygen -t rsa -b 4096 -f tfazlnxkey_${vm} -N ""
+    
+                az keyvault secret set \
+                  --vault-name $TF_VAR_state_key_vault_name \
+                  --name tfazlnxkeypub_${vm} \
+                  --file tfazlnxkey_${vm}.pub
+    
+                az keyvault secret set \
+                  --vault-name $TF_VAR_state_key_vault_name \
+                  --name tfazlnxkeypriv_${vm} \
+                  --file tfazlnxkey_${vm}
