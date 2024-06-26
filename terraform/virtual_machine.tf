@@ -9,7 +9,7 @@ resource "azurerm_linux_virtual_machine" "web" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = data.azurerm_key_vault_secret.tfazlnxkeypub-web-vm.value
+    public_key = data.azurerm_key_vault_secret.sshKey-web.value
   }
 
   os_disk {
@@ -35,7 +35,7 @@ resource "azurerm_linux_virtual_machine" "mgnmt_vm" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = data.azurerm_key_vault_secret.tfazlnxkeypub-mgmt-vm.value
+    public_key = data.azurerm_key_vault_secret.sshKey-mgmt.value
   }
 
   os_disk {
