@@ -2,7 +2,7 @@ name: Terraform Destroy
 
 on:
   workflow_dispatch:
-  
+
 jobs:
   terraform-destroy:
     name: 'Terraform Destroy'
@@ -41,7 +41,7 @@ jobs:
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
-        
+
       - name: Az login
         uses: azure/login@v2
         with:
