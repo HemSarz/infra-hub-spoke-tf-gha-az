@@ -78,13 +78,13 @@ jobs:
           source .env.backend
 
           for vm in mgmt-vm web-vm; do
-            ssh-keygen -t rsa -b 4096 -f tfazlnxkey_${vm} -N ""
+            ssh-keygen -t rsa -b 4096 -f tfazlnxkey-${vm} -N ""
             az keyvault secret set \
               --vault-name $TF_VAR_state_key_vault_name \
-              --name tfazlnxkeypub_${vm} \
+              --name tfazlnxkeypub-${vm} \
               --file tfazlnxkey-${vm}.pub
             az keyvault secret set \
               --vault-name $TF_VAR_state_key_vault_name \
               --name tfazlnxkeypriv-${vm} \
-              --file tfazlnxkey_${vm}
+              --file tfazlnxkey-${vm}
           done
