@@ -24,7 +24,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.0.11
+          terraform_version: 1.8.5
 
       - name: Source Environment Variables
         run: |
@@ -50,8 +50,5 @@ jobs:
 
       - name: Destroy backend RG
         run: |
-          az keyvault delete --name bcknd-tfaz-kvault --resource-group tfaz-bcknd-rg
-          az keyvault purge --name bcknd-tfaz-kvault --location norwayeast
-          
           az group delete --name tfaz-bcknd-rg --yes --no-wait
           az group delete --name networkwatcherrg --yes --no-wait
