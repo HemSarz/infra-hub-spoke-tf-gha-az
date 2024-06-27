@@ -19,6 +19,8 @@ resource "azurerm_linux_virtual_machine" "web" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
+
+  depends_on = [ azurerm_key_vault_secret.vm-web-sec ]
 }
 
 resource "azurerm_linux_virtual_machine" "mgnmt_vm" {
@@ -41,4 +43,6 @@ resource "azurerm_linux_virtual_machine" "mgnmt_vm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
+
+  depends_on = [ azurerm_key_vault_secret.vm-mgmt-sec ]
 }
