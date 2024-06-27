@@ -1,6 +1,6 @@
 ## Spoke Subnet01
 resource "azurerm_subnet" "spokesub01" {
-  name                 = "${var.prefix}-spoke-sub01-${var.env}" 
+  name                 = "${var.prefix}-spoke-sub01-${var.env}"
   resource_group_name  = azurerm_resource_group.tfazrg.name
   virtual_network_name = azurerm_virtual_network.spoke01.name
   address_prefixes     = ["10.1.1.0/24"]
