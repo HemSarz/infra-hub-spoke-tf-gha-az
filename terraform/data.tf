@@ -2,9 +2,9 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
 
-data "azurerm_resource_group" "tfazrgbackend" {
-  name = "tfaz-bcknd-rg"
-}
+/*data "azurerm_resource_group" "tfazrgbackend" {
+  #name = "tfaz-bcknd-rg"
+#}
 
 data "azuread_service_principal" "tfazsp" {
   display_name = "tfazspnbcknd"
@@ -39,4 +39,4 @@ output "ssh_key-web" {
 output "ssh_key-mgmt" {
   value     = data.azurerm_key_vault_secret.sshKey-mgmt.value
   sensitive = true
-}
+} */

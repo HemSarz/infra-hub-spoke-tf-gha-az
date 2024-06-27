@@ -21,9 +21,9 @@ resource "azurerm_network_interface" "mgmt_vm" {
 
   ip_configuration {
     name                          = "${var.prefix}-ipconfig-mgmt-vm-${var.env}"
-    subnet_id                     = azurerm_subnet.hubsub.id
+    subnet_id                     = azurerm_subnet.spokesub02.id
     private_ip_address_allocation = "Static"
-    private_ip_address            = "10.0.1.20"
+    private_ip_address            = "10.2.1.20"
     public_ip_address_id          = azurerm_public_ip.mgmt_pip.id
   }
 }

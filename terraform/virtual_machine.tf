@@ -5,12 +5,8 @@ resource "azurerm_linux_virtual_machine" "web" {
   resource_group_name   = azurerm_resource_group.tfazrg.name
   size                  = var.vm_size
   admin_username        = var.admin_username
+  admin_password = azurerm_key_vault_secret.vm-web-sec.value
   network_interface_ids = [azurerm_network_interface.web_app_intf.id]
-
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = data.azurerm_key_vault_secret.sshKey-web.value
-  }
 
   os_disk {
     caching              = "ReadWrite"
@@ -31,12 +27,8 @@ resource "azurerm_linux_virtual_machine" "mgnmt_vm" {
   resource_group_name   = azurerm_resource_group.tfazrg.name
   size                  = var.vm_size
   admin_username        = var.admin_username
+  admin_password = azurerm_key_vault_secret.vm-mgmt-sec.value
   network_interface_ids = [azurerm_network_interface.mgmt_vm.id]
-
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = data.azurerm_key_vault_secret.sshKey-mgmt.value
-  }
 
   os_disk {
     caching              = "ReadWrite"

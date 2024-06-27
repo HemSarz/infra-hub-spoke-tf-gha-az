@@ -62,11 +62,6 @@ resource "azurerm_route" "rt_spoke02_fw" {
 }
 
 ## Route association
-resource "azurerm_subnet_route_table_association" "hubsub_assoc" {
-  subnet_id      = azurerm_subnet.hubsub.id
-  route_table_id = azurerm_route_table.hub-rt.id
-}
-
 resource "azurerm_subnet_route_table_association" "spokesub01_assoc" {
   subnet_id      = azurerm_subnet.spokesub01.id
   route_table_id = azurerm_route_table.spoke01-rt.id
