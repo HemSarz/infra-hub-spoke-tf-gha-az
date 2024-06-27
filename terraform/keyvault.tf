@@ -12,6 +12,8 @@ resource "azurerm_key_vault_access_policy" "SPN_Access" {
   key_vault_id = azurerm_key_vault.tfazkv.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.tfazsp.object_id
+
+  secret_permissions = [ "Get", "List", "Set" ]
 }
 
 # VM Secrets
