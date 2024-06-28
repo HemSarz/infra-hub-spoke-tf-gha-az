@@ -8,12 +8,12 @@ resource "azurerm_key_vault" "tfazkv" {
   purge_protection_enabled = false
 }
 
-## Grant SPN correct role
+/*## Grant SPN correct role
 resource "azurerm_role_assignment" "spn_kv_role" {
   scope              = azurerm_key_vault.tfazkv.id
   role_definition_id = var.SPNRole
   principal_id       = data.azuread_service_principal.tfazsp.object_id
-}
+}*/
 
 resource "azurerm_key_vault_access_policy" "SPN_Access" {
   key_vault_id = azurerm_key_vault.tfazkv.id
