@@ -23,7 +23,8 @@ resource "azurerm_key_vault_access_policy" "SPN_Access" {
   secret_permissions = [
     "Get",
     "List",
-    "Set"
+    "Set",
+    "Delete"
   ]
 
 }
