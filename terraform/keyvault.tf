@@ -46,7 +46,6 @@ resource "azurerm_key_vault_secret" "vm-web-sec" {
   depends_on = [
 
     azurerm_key_vault_access_policy.SPN_Access,
-    azurerm_role_assignment.spn_kv_role
 
   ]
 }
@@ -67,7 +66,5 @@ resource "azurerm_key_vault_secret" "vm-mgmt-sec" {
   depends_on = [
 
     azurerm_key_vault_access_policy.SPN_Access,
-    azurerm_role_assignment.spn_kv_role
-
   ]
 }
