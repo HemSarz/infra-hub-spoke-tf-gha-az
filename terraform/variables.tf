@@ -52,3 +52,8 @@ variable "rtadrprefix" {
   type    = string
   default = "0.0.0.0/0"
 }
+
+variable "SPNRole" {
+  type    = string
+  default = "Contributor"
+}

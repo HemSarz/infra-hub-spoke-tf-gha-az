@@ -8,12 +8,24 @@ resource "azurerm_key_vault" "tfazkv" {
   purge_protection_enabled = false
 }
 
+## Grant SPN correct role
+resource "azurerm_role_assignment" "spn_kv_role" {
+  scope              = azurerm_key_vault.tfazkv.id
+  role_definition_id = var.SPNRole
+  principal_id       = data.azuread_service_principal.tfazsp.object_id
+}
+
 resource "azurerm_key_vault_access_policy" "SPN_Access" {
   key_vault_id = azurerm_key_vault.tfazkv.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.tfazsp.object_id
 
-  secret_permissions = ["Get", "List", "Set"]
+  secret_permissions = [
+    "Get",
+    "List",
+    "Set"
+  ]
+
 }
 
 # VM Secrets
@@ -30,6 +42,13 @@ resource "azurerm_key_vault_secret" "vm-web-sec" {
   name         = "${var.prefix}-vm-web-sec-${var.env}"
   key_vault_id = azurerm_key_vault.tfazkv.id
   value        = random_password.vm-web-rndm-sec.result
+
+  depends_on = [
+
+    azurerm_key_vault_access_policy.SPN_Access,
+    azurerm_role_assignment.spn_kv_role
+
+  ]
 }
 
 resource "random_password" "vm-mgmt-rndm-sec" {
@@ -44,4 +63,11 @@ resource "azurerm_key_vault_secret" "vm-mgmt-sec" {
   name         = "${var.prefix}-vm-mgmt-sec-${var.env}"
   key_vault_id = azurerm_key_vault.tfazkv.id
   value        = random_password.vm-mgmt-rndm-sec.result
+
+  depends_on = [
+
+    azurerm_key_vault_access_policy.SPN_Access,
+    azurerm_role_assignment.spn_kv_role
+
+  ]
 }
