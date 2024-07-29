@@ -9,15 +9,14 @@ This repository contains code and configurations to deploy a Hub-and-Spoke netwo
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Folder Structure](#folder-structure)
-- [Getting Started](#getting-started)
 - [Terraform Configuration](#terraform-configuration)
 - [GitHub Actions Workflows](#github-actions-workflows)
 - [Environment Configuration](#environment-configuration)
-
+- [Getting Started](#getting-started)
 ### Prerequisites
 Before you begin, ensure you have the following tools installed:
 
-- VSCode
+- VSCode or editor of your choice
 - An Azure account with appropriate permissions
 - Terraform
 - GitHub CLI
@@ -32,15 +31,8 @@ The repository is organized as follows:
 - `.gitignore`
 - `README.md`
 
-## Getting Started
-To get started with deploying the infrastructure:
-1. Clone the repository.
-2. Ensure you have Terraform and GitHub CLI installed.
-3. Configure your environment variables in `.env.backend`.
-4. Initialize Terraform and apply the configurations.
-
 ## Terraform Configuration
-### `terraform/`
+### `terraform`
 This directory contains the Terraform scripts necessary for deploying the Hub-and-Spoke network. The main configurations include:
 - `main.tf`: Core infrastructure setup.
 - `variables.tf`: Definitions of input variables.
@@ -65,3 +57,56 @@ This directory contains GitHub Actions workflows that automate the deployment an
 ## Environment Configuration
 ### `.env.backend`
 This file contains environment variables required for Terraform's backend configuration, such as Azure storage account details and container names for state management.
+
+## Getting Started
+To get started with deploying the infrastructure:
+1. Clone the repository.
+2. Ensure you have Terraform and GitHub CLI installed.
+3. Create an SPN in Azure with Contributor role: Create SPN using AZ CLi
+4. Create Github Secrets using the SPN values
+
+## Create SPN using AZ CLi
+
+### 1. Log in to Azure
+````
+az login
+````
+### 2. Create the SPN and assign Contributor role
+````
+az ad sp create-for-rbac --role Contributor --scopes /subscriptions/{subscription-id}
+
+````
+
+### 3. Output
+Save the output as you will need them to create Github Secrets
+````
+{
+  "appId": "your-app-id",
+  "displayName": "your-app-name",
+  "password": "your-client-secret",
+  "tenant": "your-tenant-id"
+}
+````
+### 1. Create GH Secrets using GH CLI
+
+Install GH CLI using choco or link:
+````
+- choco install gh
+- `https://github.com/cli/cli/releases/download/v2.53.0/gh_2.53.0_windows_amd64.msi`
+````
+### 2. Authenticate to Github CLI
+
+gh auth login
+
+### 3. Set your repo env
+````
+REPO="your-username/your-repo"
+````
+### 4. Set GitHub secrets using the SPN values
+Use the SPN values from earlier
+````
+gh secret set AZURE_CLIENT_ID --body "your-app-id" --repo $REPO
+gh secret set AZURE_CLIENT_SECRET --body "your-client-secret" --repo $REPO
+gh secret set AZURE_TENANT_ID --body "your-tenant-id" --repo $REPO
+gh secret set AZURE_SUBSCRIPTION_ID --body "your-subscription-id" --repo $REPO
+````
