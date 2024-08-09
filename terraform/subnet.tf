@@ -14,6 +14,15 @@ resource "azurerm_subnet" "spokesub02" {
   address_prefixes     = ["10.2.1.0/24"]
 }
 
+#Test
+## Spoke Subnet02
+resource "azurerm_subnet" "spokesub03" {
+  name                 = "${var.prefix}-spoke-sub03-${var.env}"
+  resource_group_name  = azurerm_resource_group.tfazrg.name
+  virtual_network_name = azurerm_virtual_network.spoke02.name
+  address_prefixes     = ["10.3.1.0/24"]
+}
+
 ## Firewall Subnet
 resource "azurerm_subnet" "fwsub" {
   name                 = "AzureFirewallSubnet"
